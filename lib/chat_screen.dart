@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -18,8 +19,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  bool _isTyping = true;
+  final bool _isTyping = true;
   late TextEditingController textEditingController;
+
+  // Declare this list to store messages
+  List<Map<String, dynamic>> chatMessages = [];
 
   @override
   void initState() {
@@ -65,6 +69,39 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ListView.builder(
                   itemCount: 6,
                   itemBuilder: (context, index) {
+                    if (chatMessages.isEmpty) {
+                      return Center(
+                        child: Text(
+                          'No messages yet',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }
+                    if (kDebugMode) {
+                      print("Building chat bubble. No $index");
+                    }
+                    if (index == 0) {
+                      return ChatWidget(
+                        msg: "Hello, how can I help you?",
+                        chatIndex: 1,
+                      );
+                    } else if (index == 1) {
+                      return ChatWidget(
+                        msg: "I'm doing well, thank you!",
+                        chatIndex: 2,
+                      );
+                    } else if (index == 2) {
+                      return ChatWidget(
+                        msg: "What's your name?",
+                        chatIndex: 1,
+                      );
+                    } else if (index == 3) {
+                      return ChatWidget(
+                        msg: "My name is AI.",
+                        chatIndex: 2,
+                      );
+                    }
+
                     return ChatWidget(
                       msg: chatMessages[index]['msg'].toString(),
                       chatIndex: int.parse(
