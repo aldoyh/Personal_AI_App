@@ -4,6 +4,8 @@ import 'package:personal_ai_app/api_service.dart';
 import 'package:personal_ai_app/text_widget.dart';
 
 class ModelDropDownWidget extends StatefulWidget {
+  const ModelDropDownWidget({super.key});
+
   @override
   State<ModelDropDownWidget> createState() => _ModelDropDownWidgetState();
 }

@@ -6,7 +6,7 @@ import 'package:personal_ai_app/assets_manager.dart';
 import 'package:personal_ai_app/text_widget.dart';
 
 class ChatWidget extends StatelessWidget {
-  ChatWidget({required this.msg, required this.chatIndex});
+  const ChatWidget({super.key, required this.msg, required this.chatIndex});
   final String msg;
   final int chatIndex;
   @override
