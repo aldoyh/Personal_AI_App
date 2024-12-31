@@ -1,39 +1,27 @@
 import 'package:flutter/material.dart';
-
-import '../constants.dart';
-import '../chat_screen.dart';
-
-// void equalPress() {
-//    String finalUserInput = userInput;
-//    finalUserInput = userInput.replaceAll('x', '*');
-//    Parser p = Parser();
-//    Expression expression = p.parse(finalUserInput);
-//    ContextModel contextModel = ContextModel();
-//    double eval = expression.evaluate(EvaluationType.REAL, contextModel);
-//    answer = eval.toString();
-//  }
+import 'chat_screen.dart';
+import 'core/theme/app_theme.dart';
+import 'core/routes/app_router.dart';
+import 'core/services/service_locator.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  setupServiceLocator();
+  runApp(const MyApp());
 }
-
-//trial comment
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: kScaffoldBackgroundColor,
-        appBarTheme: AppBarTheme(
-          color: kCardColor,
-        ),
-      ),
-      home: ChatScreen(),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      onGenerateRoute: AppRouter.onGenerateRoute,
+      home: const ChatScreen(),
     );
   }
 }
