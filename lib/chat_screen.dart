@@ -2,15 +2,13 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:personal_ai_app/constants.dart';
-// import 'package:flutter/src/widgets/framework.dart';
-import 'package:personal_ai_app/api_service.dart';
 import 'package:personal_ai_app/chat_widget.dart';
-// import 'package:personal_ai_app/text_widget.dart';
 import 'package:personal_ai_app/services.dart';
-
+import 'package:personal_ai_app/api_service.dart';
+import 'core/utils/logger.dart';
 import '../../assets_manager.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -21,10 +19,9 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final bool _isTyping = true;
+  bool _isTyping = false;
   late TextEditingController textEditingController;
 
-  // Declare this list to store messages
   List<Map<String, dynamic>> chatMessages = [];
 
   @override
@@ -39,6 +36,33 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
+  void _handleSubmitted(String text) async {
+    if (text.isEmpty) return;
+
+    setState(() {
+      _isTyping = true;
+      chatMessages.insert(0, {'msg': text, 'chatIndex': 1});
+      textEditingController.clear();
+    });
+
+    try {
+      // Send the message to the API
+      final response = await ApiService.sendMessage(text);
+      setState(() {
+        chatMessages.insert(0, {'msg': response, 'chatIndex': 2});
+      });
+    } catch (e) {
+      logger.e('Error in _handleSubmitted: $e');
+      setState(() {
+        chatMessages.insert(0, {'msg': 'Error: $e', 'chatIndex': 2});
+      });
+    } finally {
+      setState(() {
+        _isTyping = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,10 +72,13 @@ class _ChatScreenState extends State<ChatScreen> {
           padding: EdgeInsets.all(10),
           child: Image.asset(AssetsManager.logo),
         ),
-        title: Text(
-          'Personal  AI',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: Text('Personal AI مساعدك الشخصي',
+            style: TextStyle(
+              color: const Color.fromARGB(255, 71, 2, 91),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              fontFamily: GoogleFonts.tajawal.toString(),
+            )),
         actions: [
           IconButton(
             onPressed: () async {
@@ -69,96 +96,66 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Flexible(
               child: ListView.builder(
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                    if (chatMessages.isEmpty) {
-                      return Center(
-                        child: Text(
-                          'No messages yet',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }
-                    if (kDebugMode) {
-                      print("Building chat bubble. No $index");
-                    }
-                    if (index == 0) {
-                      return ChatWidget(
-                        msg: "Hello, how can I help you?",
-                        chatIndex: 1,
-                      );
-                    } else if (index == 1) {
-                      return ChatWidget(
-                        msg: "I'm doing well, thank you!",
-                        chatIndex: 2,
-                      );
-                    } else if (index == 2) {
-                      return ChatWidget(
-                        msg: "What's your name?",
-                        chatIndex: 1,
-                      );
-                    } else if (index == 3) {
-                      return ChatWidget(
-                        msg: "My name is AI.",
-                        chatIndex: 2,
-                      );
-                    }
-
-                    return ChatWidget(
-                      msg: chatMessages[index]['msg'].toString(),
-                      chatIndex: int.parse(
-                          chatMessages[index]['chatIndex'].toString()),
+                itemCount: chatMessages.length,
+                reverse: true,
+                itemBuilder: (context, index) {
+                  if (chatMessages.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'No messages yet',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     );
-                  }),
+                  }
+                  if (kDebugMode) {
+                    logger.d("Building chat bubble. No $index");
+                  }
+                  return ChatWidget(
+                    msg: chatMessages[index]['msg'].toString(),
+                    chatIndex:
+                        int.parse(chatMessages[index]['chatIndex'].toString()),
+                  );
+                },
+              ),
             ),
             if (_isTyping) ...[
               SpinKitThreeBounce(
                 color: Colors.white,
                 size: 18,
               ),
-              // SizedBox(
-              //   height: 15,
-              // ),
-              // Material(
-              Container(
-                color: kCardColor,
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          style: TextStyle(color: Colors.white),
-                          controller: textEditingController,
-                          onSubmitted: (value) {
-                            //to do message
-                          },
-                          decoration: InputDecoration.collapsed(
-                            hintText: 'How can I help you',
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                            ),
+            ],
+            Container(
+              color: kCardColor,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        style: TextStyle(color: Colors.white),
+                        controller: textEditingController,
+                        onSubmitted: _handleSubmitted,
+                        decoration: InputDecoration.collapsed(
+                          hintText: 'How can I help you',
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
                           ),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () async {
-                          try {
-                            await ApiService.getModels();
-                          } catch (error) {
-                            print('error $error');
-                          }
-                        },
-                        icon: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        _handleSubmitted(textEditingController.text);
+                      },
+                      icon: Icon(
+                        Icons.send,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ]
+            ),
           ],
         ),
       ),

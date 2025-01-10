@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../features/chat/presentation/screens/chat_screen.dart';
+import '../../chat_screen.dart';
 
 class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
