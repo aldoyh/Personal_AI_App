@@ -8,25 +8,25 @@ class EnvChecker {
       final apiKey = dotenv.env['API_KEY'];
 
       if (apiUrl == null || apiUrl.isEmpty) {
-        logger.e('API_BASE_URL is missing or empty');
+        logger.e('xAI API_BASE_URL is missing or empty');
         return false;
       }
 
-      if (apiKey == null || apiKey.isEmpty) {
-        logger.e('API_KEY is missing or empty');
+      if (apiKey == null || apiKey.isEmpty || !apiKey.startsWith('xai-')) {
+        logger.e('Invalid xAI API key format');
         return false;
       }
 
       final uri = Uri.parse(apiUrl);
-      if (!uri.isAbsolute || !uri.host.contains('chat.x.ai')) {
-        logger.e('Invalid API URL format: $apiUrl');
+      if (!uri.isAbsolute || !uri.host.contains('x.ai')) {
+        logger.e('Invalid xAI API URL format: $apiUrl');
         return false;
       }
 
-      logger.i('Environment verified. API URL: $apiUrl');
+      logger.i('xAI environment verified successfully');
       return true;
     } catch (e) {
-      logger.e('Environment verification failed: $e');
+      logger.e('xAI environment verification failed: $e');
       return false;
     }
   }

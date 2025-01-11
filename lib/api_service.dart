@@ -8,14 +8,15 @@ class ApiService {
   static String get apiKey => dotenv.env['API_KEY'] ?? '';
 
   static Future<String> sendMessage(String message) async {
-    final url = baseUrl;  // No need to append /chat/completions as it's in the base URL
+    final url = baseUrl;
     try {
-      logger.d('Making request to: $url');
+      logger.d('Making xAI request to: $url');
       final response = await http.post(
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $apiKey',
+          'Accept': 'application/json',
         },
         body: jsonEncode({
           'messages': [
@@ -24,50 +25,31 @@ class ApiService {
               'content': message,
             }
           ],
+          // xAI specific parameters
+          'model': 'x1', // x1 is their latest model
+          'stream': false,
+          'temperature': 0.7,
+          'max_tokens': 800,
+          'top_p': 1,
         }),
       );
 
       logger.d('Response status: ${response.statusCode}');
-      logger.d('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         return jsonResponse['choices'][0]['message']['content'];
       } else {
-        throw Exception('API Error: ${response.statusCode} - ${response.body}');
+        throw Exception('xAI API Error: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      logger.e('Request failed: $e\nURL: $url');
+      logger.e('xAI Request failed: $e\nURL: $url');
       return 'Error: $e';
     }
   }
 
-  static Future<dynamic> getModels() async {
-    // call the base Url but with /models endpoint
-    final url = '$baseUrl/models';
-    try {
-      logger.d('Fetching models from: $url');
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {
-          'Authorization': 'Bearer $apiKey',
-        },
-      );
-
-      logger.d('Response status: ${response.statusCode}');
-      logger.d('Response body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        return jsonResponse['data'];
-      } else {
-        throw Exception('API Error: ${response.statusCode} - ${response.body}');
-      }
-    } catch (e) {
-      logger.e('Request failed: $e URL: $url');
-      return 'Error: $e';
+  static getModels() {
+    // TODO: Implement this method to get the list of models from xAI API
     
-    }
-
   }
 }
