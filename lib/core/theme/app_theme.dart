@@ -2,21 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
+  static const _primaryColor = Color.fromARGB(255, 71, 2, 91);
+  static const _backgroundColor = Color.fromARGB(255, 14, 1, 58);
+
+  static final TextTheme _textTheme = TextTheme(
+    bodyLarge: TextStyle(fontFamily: 'Tajawal'),
+    bodyMedium: TextStyle(fontFamily: 'Tajawal'),
+    titleLarge: TextStyle(fontFamily: 'Tajawal'),
+    titleMedium: TextStyle(fontFamily: 'Tajawal'),
+    // Add other text styles as needed
+  );
+
   static ThemeData get lightTheme => ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color.fromARGB(255, 14, 1, 58),
+        scaffoldBackgroundColor: _backgroundColor,
         appBarTheme: AppBarTheme(
-          color: Color(0xFFFFFFFF),
+          color: Colors.white,
           elevation: 0,
           titleTextStyle: GoogleFonts.tajawal(
-            color: const Color.fromARGB(255, 71, 2, 91),
+            color: _primaryColor,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
+          iconTheme: const IconThemeData(color: _primaryColor),
         ),
-        textTheme: GoogleFonts.tajawalTextTheme(),
+        textTheme: _textTheme,
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: GoogleFonts.tajawal(color: Colors.grey),
+          border: InputBorder.none,
+        ),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
+          seedColor: _primaryColor,
           brightness: Brightness.light,
         ),
       );
@@ -33,7 +49,7 @@ class AppTheme {
             fontWeight: FontWeight.bold,
           ),
         ),
-        textTheme: GoogleFonts.tajawalTextTheme(),
+        textTheme: _textTheme,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blue,
           brightness: Brightness.dark,

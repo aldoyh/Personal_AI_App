@@ -10,6 +10,7 @@ import 'package:personal_ai_app/services.dart';
 import 'package:personal_ai_app/api_service.dart';
 import 'core/utils/logger.dart';
 import '../../assets_manager.dart';
+// import 'features/settings/domain/providers/settings_provider.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -37,7 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _handleSubmitted(String text) async {
-    if (text.isEmpty) return;
+    if (text.trim().isEmpty) return;
 
     setState(() {
       _isTyping = true;
@@ -80,6 +81,13 @@ class _ChatScreenState extends State<ChatScreen> {
               fontFamily: GoogleFonts.tajawal.toString(),
             )),
         actions: [
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, '/settings'),
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+          ),
           IconButton(
             onPressed: () async {
               await Services.showModalSheet(context: context);

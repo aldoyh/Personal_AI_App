@@ -37,29 +37,49 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _handleSubmitted(String text) async {
-    if (text.isEmpty) return;
+    if (text.trim().isEmpty) return;
 
     setState(() {
       _isTyping = true;
-      chatMessages.insert(0, {'msg': text, 'chatIndex': 1});
+      chatMessages.insert(0, {
+        'msg': text,
+        'chatIndex': 1,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
       textEditingController.clear();
     });
 
     try {
-      // Send the message to the API
+      // Fixed: Remove extra context parameter
       final response = await ApiService.sendMessage(text);
+      if (!mounted) return;
+
       setState(() {
-        chatMessages.insert(0, {'msg': response, 'chatIndex': 2});
+        chatMessages.insert(0, {
+          'msg': response,
+          'chatIndex': 2,
+          'timestamp': DateTime.now().toIso8601String(),
+        });
       });
     } catch (e) {
       logger.e('Error in _handleSubmitted: $e');
-      setState(() {
-        chatMessages.insert(0, {'msg': 'Error: $e', 'chatIndex': 2});
-      });
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Error: Failed to get response',
+            style: TextStyle(
+              fontFamily: GoogleFonts.tajawal().fontFamily,
+            ),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
     } finally {
-      setState(() {
-        _isTyping = false;
-      });
+      if (mounted) {
+        setState(() => _isTyping = false);
+      }
     }
   }
 
