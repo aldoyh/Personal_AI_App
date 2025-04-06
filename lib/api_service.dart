@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
-import 'package:kuch_bhi_ai/constants/api_consts.dart';
-import 'package:kuch_bhi_ai/models/models_model.dart';
+import 'package:personal_ai_app/constants/api_consts.dart';
+import 'package:personal_ai_app/models/models_model.dart';
 
 class ApiService {
   static Future<List<ModelsModel>> getModels() async {

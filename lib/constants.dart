@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kuch_bhi_ai/widgets/text_widget.dart';
+import 'package:personal_ai_app/widgets/text_widget.dart';
 
 const Color kScaffoldBackgroundColor = Color(0xFF343541);
 const Color kCardColor = Color(0xFF444654);

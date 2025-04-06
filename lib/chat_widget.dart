@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:kuch_bhi_ai/constants/constants.dart';
-import 'package:kuch_bhi_ai/services/assets_manager.dart';
-import 'package:kuch_bhi_ai/widgets/text_widget.dart';
+import 'package:personal_ai_app/constants/constants.dart';
+import 'package:personal_ai_app/services/assets_manager.dart';
+import 'package:personal_ai_app/widgets/text_widget.dart';
 
 class ChatWidget extends StatelessWidget {
   ChatWidget({required this.msg, required this.chatIndex});

@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:kuch_bhi_ai/constants/constants.dart';
-import 'package:kuch_bhi_ai/widgets/drop_down.dart';
-import 'package:kuch_bhi_ai/widgets/text_widget.dart';
+import 'package:personal_ai_app/constants/constants.dart';
+import 'package:personal_ai_app/widgets/drop_down.dart';
+import 'package:personal_ai_app/widgets/text_widget.dart';
 
 class Services {
   static Future<void> showModalSheet({required BuildContext context}) async {

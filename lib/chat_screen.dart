@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:kuch_bhi_ai/constants/constants.dart';
+import 'package:personal_ai_app/constants/constants.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:kuch_bhi_ai/services/api_service.dart';
-import 'package:kuch_bhi_ai/widgets/chat_widget.dart';
-import 'package:kuch_bhi_ai/widgets/text_widget.dart';
-import 'package:kuch_bhi_ai/services/services.dart';
+import 'package:personal_ai_app/services/api_service.dart';
+import 'package:personal_ai_app/widgets/chat_widget.dart';
+import 'package:personal_ai_app/widgets/text_widget.dart';
+import 'package:personal_ai_app/services/services.dart';
 
 import '../services/assets_manager.dart';
 

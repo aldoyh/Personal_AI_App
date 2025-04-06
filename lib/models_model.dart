@@ -1,4 +1,4 @@
-import 'package:kuch_bhi_ai/constants/api_consts.dart';
+import 'package:personal_ai_app/constants/api_consts.dart';
 
 class ModelsModel {
   final String id;
