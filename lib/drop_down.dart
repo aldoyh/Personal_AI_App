@@ -14,7 +14,7 @@ class _ModelDropDownWidgetState extends State<ModelDropDownWidget> {
   String currentModel = 'Model 1';
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<List<dynamic>>(
         future: ApiService.getModels(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -29,7 +29,15 @@ class _ModelDropDownWidgetState extends State<ModelDropDownWidget> {
               : DropdownButton(
                   dropdownColor: kScaffoldBackgroundColor,
                   iconEnabledColor: Colors.white,
-                  items: getModelsItem,
+                  items: List<DropdownMenuItem<String>>.generate(
+                    snapshot.data!.length,
+                    (index) => DropdownMenuItem(
+                      value: snapshot.data![index],
+                      child: TextWidget(
+                        label: snapshot.data![index].toString(),
+                      ),
+                    ),
+                  ),
                   value: currentModel,
                   onChanged: (value) {
                     setState(() {

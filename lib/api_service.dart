@@ -38,18 +38,48 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        return jsonResponse['choices'][0]['message']['content'];
+        final content = jsonResponse['choices']?[0]?['message']?['content'];
+        if (content == null) {
+          throw Exception('Invalid response format from xAI API');
+        }
+        return content;
+      } else if (response.statusCode == 401) {
+        throw Exception('Authentication failed: Please check your API key');
+      } else if (response.statusCode == 429) {
+        throw Exception('Rate limit exceeded: Please try again later');
       } else {
-        throw Exception('xAI API Error: ${response.statusCode} - ${response.body}');
+        throw Exception('xAI API Error (${response.statusCode}): ${response.reasonPhrase}');
       }
     } catch (e) {
       logger.e('xAI Request failed: $e\nURL: $url');
-      return 'Error: $e';
+      rethrow;
     }
   }
 
-  static getModels() {
-    // TODO: Implement this method to get the list of models from xAI API
-    
+  static Future<List<String>> getModels() async {
+    final url = '${baseUrl.split('/chat')[0]}/models';
+    try {
+      logger.d('Fetching available models from: $url');
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $apiKey',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        final models = (jsonResponse['data'] as List)
+            .map((model) => model['id'] as String)
+            .toList();
+        return models;
+      } else {
+        throw Exception('Failed to fetch models: ${response.statusCode}');
+      }
+    } catch (e) {
+      logger.e('Failed to get models: $e');
+      return ['x1']; // Fallback to default model
+    }
   }
 }
