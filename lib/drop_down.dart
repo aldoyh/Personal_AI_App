@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:personal_ai_app/constants.dart';
-import 'package:personal_ai_app/api_service.dart';
-import 'package:personal_ai_app/text_widget.dart';
+import 'package:personal_ai_app/constants/constants.dart';
+import 'package:personal_ai_app/services/api_service.dart';
+import 'package:personal_ai_app/widgets/text_widget.dart';
 
 class ModelDropDownWidget extends StatefulWidget {
   const ModelDropDownWidget({super.key});

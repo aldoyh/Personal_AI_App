@@ -1,3 +1,5 @@
+import 'package:personal_ai_app/constants/api_consts.dart';
+
 class ModelsModel {
   final String id;
   final int created;

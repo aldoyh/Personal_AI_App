@@ -1,5 +1,2 @@
-// const baseUrl = 'https://api.openai.com/v1/chat/completions';
-// use x.AI Grok2
-const baseUrl = 'https://api.xai.com/v1';
-const apiKey =
-    'xai-jE3PpkjNbAzLUAUx9My3QN9QY9P7q2LSt7zMCWKSuD7IHowghyDyghi8ypAVdvgg9QXAE8KWNTCSqDay';
+String BASE_URL = 'https://api.openai.com/v1';
+String API_KEY = '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';
