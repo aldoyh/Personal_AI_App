@@ -1,7 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:kuch_bhi_ai/constants/api_consts.dart';
-import 'package:http/http.dart' as http;
 
 class ModelsModel {
   final String id;
