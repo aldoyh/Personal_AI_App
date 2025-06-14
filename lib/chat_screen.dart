@@ -1,16 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:personal_ai_app/constants/constants.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:personal_ai_app/services/api_service.dart';
 import 'package:personal_ai_app/widgets/chat_widget.dart';
 import 'package:personal_ai_app/widgets/text_widget.dart';
 import 'package:personal_ai_app/services/services.dart';
-
-import '../services/assets_manager.dart';
+import 'package:personal_ai_app/services/assets_manager.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -43,59 +37,43 @@ class _ChatScreenState extends State<ChatScreen> {
           child: Image.asset(AssetsManager.logo),
         ),
         title: Text(
-          'Personal  AI',
-          style: TextStyle(color: Colors.white),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await Services.showModalSheet(context: context);
-            },
-            icon: Icon(
-              Icons.more_vert_rounded,
-              color: Colors.white,
-            ),
+          'Personal AI',
+          style: TextStyle(
+            color: Colors.white,
           ),
-        ],
+        ),
       ),
       body: SafeArea(
         child: Column(
           children: [
             Flexible(
               child: ListView.builder(
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                    return ChatWidget(
-                      msg: chatMessages[index]['msg'].toString(),
-                      chatIndex: int.parse(
-                          chatMessages[index]['chatIndex'].toString()),
-                    );
-                  }),
+                itemCount: chatMessages.length,
+                itemBuilder: (context, index) {
+                  return ChatWidget(
+                    msg: chatMessages[index]['msg'],
+                    chatIndex: chatMessages[index]['chatIndex'],
+                  );
+                },
+              ),
             ),
             if (_isTyping) ...[
-              SpinKitThreeBounce(
-                color: Colors.white,
-                size: 18,
+              const SizedBox(
+                height: 15,
               ),
-              // SizedBox(
-              //   height: 15,
-              // ),
-              // Material(
-              Container(
+              const Material(
                 color: kCardColor,
                 child: Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(8.0),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
-                          style: TextStyle(color: Colors.white),
-                          controller: textEditingController,
-                          onSubmitted: (value) {
-                            //to do message
-                          },
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                           decoration: InputDecoration.collapsed(
-                            hintText: 'How can I help you',
+                            hintText: "How can I help you",
                             hintStyle: TextStyle(
                               color: Colors.grey,
                             ),
@@ -103,23 +81,19 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () async {
-                          try {
-                            await ApiService.getModels();
-                          } catch (error) {
-                            print('error $error');
-                          }
+                        onPressed: () {
+                          // Handle send button press
                         },
                         icon: Icon(
                           Icons.send,
                           color: Colors.white,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
-            ]
+            ],
           ],
         ),
       ),

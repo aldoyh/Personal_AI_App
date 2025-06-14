@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:personal_ai_app/constants/api_consts.dart';
 import 'package:personal_ai_app/models/models_model.dart';
@@ -16,18 +14,12 @@ class ApiService {
 
       if (jsonResponse['error'] != null) {
         // print("jsonResponse['error'] ${jsonResponse['error']['message']}");
-        throw HttpException(jsonResponse['error']['message']);
+        throw Exception(jsonResponse['error']['message']);
       }
-      // print('jsonResponse $jsonResponse');
-      List temp = [];
-      for (var value in jsonResponse['data']) {
-        temp.add(value);
-        // log("temp ${value['id']}");
-      }
-      return ModelsModel.modelsFromSnapshot(temp);
-    } catch (error) {
-      print('error $error');
-      rethrow;
+
+      return ModelsModel.modelsFromSnapshot(jsonResponse['data']);
+    } catch (e) {
+      throw Exception('Failed to load models: $e');
     }
   }
 }

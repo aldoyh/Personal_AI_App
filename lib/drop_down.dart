@@ -9,32 +9,35 @@ class ModelDropDownWidget extends StatefulWidget {
 }
 
 class _ModelDropDownWidgetState extends State<ModelDropDownWidget> {
-  String currentModel = 'Model 1';
+  String currentModel = 'Model1';
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: ApiService.getModels(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: TextWidget(
-                label: snapshot.error.toString(),
-              ),
-            );
-          }
-          return snapshot.data == null || snapshot.data!.isEmpty
-              ? SizedBox.shrink()
-              : DropdownButton(
-                  dropdownColor: kScaffoldBackgroundColor,
-                  iconEnabledColor: Colors.white,
-                  items: getModelsItem,
-                  value: currentModel,
-                  onChanged: (value) {
-                    setState(() {
-                      currentModel = value.toString();
-                    });
-                  },
-                );
-        });
+      future: ApiService.getModels(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: TextWidget(
+              label: snapshot.error.toString(),
+            ),
+          );
+        }
+        return SizedBox(
+          width: 100,
+          child: DropdownButton(
+            dropdownColor: kScaffoldBackgroundColor,
+            iconEnabledColor: Colors.white,
+            items: getModelsItem,
+            value: currentModel,
+            onChanged: (value) {
+              setState(() {
+                currentModel = value.toString();
+              });
+            },
+          ),
+        );
+      },
+    );
   }
 }
