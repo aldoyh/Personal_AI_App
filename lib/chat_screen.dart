@@ -61,7 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
               const SizedBox(
                 height: 15,
               ),
-              const Material(
+              Material(
                 color: kCardColor,
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
