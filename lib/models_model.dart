@@ -1,4 +1,6 @@
-import 'package:personal_ai_app/constants/api_consts.dart';
+
+// Add your API constants here
+const String apiBaseUrl = 'https://aldoy.net/personal_app/api';
 
 class ModelsModel {
   final String id;
